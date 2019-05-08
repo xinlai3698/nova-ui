@@ -1,5 +1,7 @@
 # Breadcrumb 面包屑
 
+## 使用和示例
+
 ### 基础用法
 :::demo
 ```html
@@ -10,14 +12,21 @@
       <li class="nv-breadcrumb__item">
         <a>一级菜单</a>
       </li>
-      <li class="nv-breadcrumb__separator"></li>
       <li class="nv-breadcrumb__item">
         <a>二级菜单</a>
       </li>
-      <li class="nv-breadcrumb__separator"></li>
       <li class="nv-breadcrumb__item">三级菜单</li>  
     </ul>  
   </div>
 </div>
 ```
 :::
+
+
+## API
+### 类名
+
+| Class  |  Description  |
+|---|---|
+| `nv-breadcrumb`  | 基础类名  |
+| `nv-breadcrumb__item`  | 导航项  |

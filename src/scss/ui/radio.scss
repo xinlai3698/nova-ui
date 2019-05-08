@@ -17,6 +17,8 @@
     height: 16px;
     border: 1px solid $color-line;
     border-radius: 50%;
+    background-color: white;
+    z-index: 1;
 
     &::before {
       content: '';
@@ -44,7 +46,7 @@
 
     &:not([disabled]):not([checked]) {
       ~ .nv-radio__icon:hover {
-        border-color: $color-line-dark;
+        border-color: $color-line--dark;
       }
     }
 
@@ -55,7 +57,7 @@
       }
 
       ~ .nv-radio__label {
-        color: $color-text-disabled;
+        color: $color-text--disabled;
         cursor: not-allowed;
       }
     }

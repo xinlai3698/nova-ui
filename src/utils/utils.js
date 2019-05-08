@@ -287,7 +287,7 @@ export const uuid = () => ++uid
  * @param {*} message 
  * @param {*} type 
  */
-export const throwError = (message,  type) => {
+export const throwError = (message, type) => {
   message = `[NOVA.UI.ERROR] ${message.toString()}`
   let method
   switch (type) {
@@ -302,6 +302,33 @@ export const throwError = (message,  type) => {
   }
   throw new method(message)
 }
+
+
+/**
+ * 比较两个JSON
+ * @param {*} v1 
+ * @param {*} v2 
+ */
+export const compareJson = (v1, v2) => v1 && v2 && JSON.stringify(v1) === JSON.stringify(v2)
+
+
+
+/**
+ * html转实体
+ * @param {*} html 
+ */
+export const encodeHtml = html => {
+  if (!html) return html
+  return html.replace(/[<>&"]/g, function (char) {
+    return {
+      '<': '&lt;',
+      '>': '&gt;',
+      '&': '&amp;',
+      '"': '&quot;'
+    }[char]
+  })
+}
+
 
 export default {
   isString,
@@ -326,5 +353,7 @@ export default {
   getObjectValue,
   uuid,
   throwError,
+  compareJson,
+  encodeHtml,
 }
 

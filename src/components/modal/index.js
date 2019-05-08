@@ -1,7 +1,7 @@
 /*
  * File: index.js
  * Project: @vnnox/novaui
- * Description: Used for ...
+ * Description: 页面对话框
  * Created: 2018-11-19 10:32
  * Author: smohan (mengxw@novastar.tech)
  * -----
@@ -36,42 +36,42 @@ const Selectors = {
 
 // default config
 const defaults = {
-  // [Boolean] 默认是否打开
+  // [boolean] 默认是否打开
   visible: false,
-  // [String | Boolean] 标题
+  // [string | boolean] 标题
   title: '',
-  // [String | HTMLElement] 内容
+  // [string | htmlelement] 内容
   content: '',
-  // [Boolean] 显示关闭按钮
+  // [boolean] 显示关闭按钮
   closeBtn: true,
   // [HTMLElement] 插入到的父级元素
   appendTo: document.body,
-  // [Boolean] 显示遮罩层
+  // [boolean] 显示遮罩层
   backdrop: true,
-  // [String] 遮罩层背景色
+  // [string] 遮罩层背景色
   backdropBackground: 'rgba(0,0,0,.5)',
-  // [Boolean] 点击遮罩层关闭
+  // [boolean] 点击遮罩层关闭
   backdropClose: true,
-  // [Boolean] 按Esc键关闭
+  // [boolean] 按esc键关闭
   escClose: true,
-  // [ Number| String | null ] 模态框宽度
+  // [ number| string | null ] 模态框宽度
   width: null,
-  // [ Number | String ] 距离顶部高度
+  // [ number | string ] 距离顶部高度
   top: '10%',
-  // [ String | null] 自定义样式
+  // [ string | null] 自定义样式
   customClass: null,
   /**
-   * [Array | null | Boolean]
+   * [array | null | boolean]
    * button: {
-   *   text: [String] 按钮文本
-   *   css: [String] 按钮样式
-   *   hanlde: [Function] 按钮事件
+   *   text: [string] 按钮文本
+   *   css: [string] 按钮样式
+   *   hanlde: [function] 按钮事件
    * }
    */
   btns: null,
-  // [String | HTMLElement] btns同级插槽
+  // [string | HTMLElement] btns同级插槽
   footSlot: null,
-  // [Boolean] 是否锁屏
+  // [boolean] 是否锁屏
   scrollLock: true
 }
 
@@ -94,6 +94,42 @@ function createBtn(btn) {
   $el.className = 'nv-btn nv-dialog__btn'
   addClass($el, btn.css)
   return $el
+}
+
+
+/**
+ * update top
+ * @private
+ */
+function updateTop () {
+  const {props, states} = this
+  if (props.top) {
+    let top
+    if (NUMBER_REG.test(props.top)) {
+      top = props.top + 'px'
+    } else if (!isNaN(parseFloat(props.top))) {
+      top = props.top 
+    }
+    top && (states.$dialog.style.top = top)
+  }
+}
+
+
+/**
+ * @private
+ * 更新width
+ */
+function updateWidth () {
+  const {props, states} = this
+  if (props.width) {
+    let width
+    if (NUMBER_REG.test(props.width)) {
+      width = props.width + 'px'
+    } else if (!isNaN(parseFloat(props.width))) {
+      width = props.width 
+    }
+    width && (states.$dialog.style.width = width)
+  }
 }
 
 
@@ -147,26 +183,9 @@ function render() {
   states.$footSlot = qsa(Selectors.footSlot, $el)[0]
   states.$btnsWrap = qsa(Selectors.btns, $el)[0]
   
-  if (props.top) {
-    let top
-    if (NUMBER_REG.test(props.top)) {
-      top = props.top + 'px'
-    } else if (!isNaN(parseFloat(props.top))) {
-      top = props.top 
-    }
-    top && (states.$dialog.style.top = top)
-  }
-
-  if (props.width) {
-    let width
-    if (NUMBER_REG.test(props.width)) {
-      width = props.width + 'px'
-    } else if (!isNaN(parseFloat(props.width))) {
-      width = props.width 
-    }
-    width && (states.$dialog.style.width = width)
-  }
-
+  updateTop.call(this)
+  updateWidth.call(this)
+  
   // render content
   if (props.content) {
     isElement(props.content) ? states.$body.appendChild(props.content) :
@@ -340,6 +359,26 @@ export class Modal extends Events {
       this.emit('close', type, states.$el)
     }
     states.visible = false
+  }
+
+
+  /**
+   * 更新options
+   * @date 2019-03-08
+   * @param {*} options
+   * @memberof Modal
+   */
+  updateOptions (options) {
+    const { states } = this
+    if (!options || !isPlainObject(options)) {
+      return
+    }
+
+    this.props = mixins({}, defaults, this.props, options)
+
+    updateTop.call(this)
+    updateWidth.call(this)
+    states.$title.textContent = (this.props.title || '').toString()
   }
 
 

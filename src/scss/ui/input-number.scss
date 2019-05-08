@@ -39,11 +39,11 @@
     }
 
     &:hover {
-      color: $color-hint;
+      color: $color-spin--hover;
     }
 
     &.nv-disabled {
-      color: $color-spin-disabled;
+      color: $color-spin--disabled;
       cursor: not-allowed;
     }
   }
@@ -84,7 +84,7 @@
       font-size: 12px;
 
       &.nv-disabled {
-        background-color: $color-bg-disabled;
+        background-color: $color-bg--disabled;
       }
     }
 
@@ -96,7 +96,7 @@
       border-bottom-left-radius: $input-radius;
 
       &::after {
-        content: '\e900';
+        content: '\e901';
       }
     }
 
@@ -108,7 +108,7 @@
       border-bottom-right-radius: $input-radius;
 
       &::after {
-        content: '\e901';
+        content: '\e900';
       }
     }
   }

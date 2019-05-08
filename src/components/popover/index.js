@@ -1,7 +1,7 @@
 /*
  * File: index.js
  * Project: @vnnox/novaui
- * Description: Used for ...
+ * Description: 轻量级模态框
  * Created: 2018-11-22 09:14
  * Author: smohan (mengxw@novastar.tech)
  * -----
@@ -28,6 +28,7 @@ const noop = function () { }
 const popoverDefaults = {
   title: '',
   width: '200px',
+  zIndex: null,
   asHtml: false,
   showConfirm: false,
   showCancel: false,
@@ -106,7 +107,15 @@ function render() {
   states.$confirm = qsa(Selectors.confirm, $el)[0]
   states.$cancel = qsa(Selectors.cancel, $el)[0]
 
-  states.$content[props.asHtml ? 'innerHTML' : 'textContent'] = (props.content || '').toString()
+  if (props.asHtml) {
+    if (isElement(props.content)) {
+      states.$content.appendChild(props.content)
+    } else {
+      states.$content.innerHTML = (props.content || '').toString()
+    }
+  } else {
+    states.$content.textContent = (props.content || '').toString()
+  }
 
   initPickerInstance.call(this)
   bindEvents.call(this)
@@ -147,9 +156,11 @@ function initPickerInstance() {
       delete options[k]
     }
   }
+
   options.content = states.$el
   options.customClass = (props.customClass || '') + ',nv-picker--popover'
   options.closeType = props.closeType || 'destroy'
+  options.zIndex = props.zIndex
   
   states.pickerInstance = new Picker(states.$target, options)
   states.pickerInstance

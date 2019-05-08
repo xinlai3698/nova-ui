@@ -1,11 +1,12 @@
 <template>
   <div class="nv-select--wrap">
     <slot />
-  </div>  
+  </div>
 </template>
 
 <script>
   import Select from '../../components/select'
+  import { objectClone } from '../../utils/utils'
   export default {
     name: 'nv-select',
     props: {
@@ -40,31 +41,42 @@
       loadingText: String,
       noDataText: String,
       noMatchDataText: String,
-      render: Function
+      render: Function,
+      align: String
     },
-    data () {
+
+    data() {
       return {
-        data: this.options,
+        data: objectClone(this.options),
         instance: null
       }
     },
+
     methods: {
-      addOption (option) {
-        this.data.push(option)
+      addOption(option) {
+        if (this.data.find(item => item.value === option.value)) {
+          return
+        }
+        this.data.push(objectClone(option))
         this.instance && this.instance.setOptions(this.data)
       }
     },
 
-    mounted () {
-      let props = this.$props
+    mounted() {
+      const props = objectClone(this.$props)
       props.options = this.data
+      props.filter = this.filter
+      props.render = this.render
       this.instance = new Select(this.$el, props)
       this.instance
-      .on('open', () => this.$emit('open'))
-      .on('close', () => this.$emit('close'))
-      .on('focus', event => this.$emit('focus', event))
-      .on('blur', event => this.$emit('blur', event))
-      .on('change', (value, options) => this.$emit('change', value, options))
+        .on('open', () => this.$emit('open'))
+        .on('close', () => this.$emit('close'))
+        .on('focus', event => this.$emit('focus', event))
+        .on('blur', event => this.$emit('blur', event))
+        .on('change', (value, options) => {
+          this.$emit('input', value)
+          this.$emit('change', value, options)
+        })
     },
 
     beforeDestroy() {
@@ -73,12 +85,21 @@
     },
 
     watch: {
-      disabled() {
-        this.disabled ? this.instance.disable() : this.instance.enable()
+      disabled(val) {
+        val ? this.instance.disable() : this.instance.enable()
       },
-      value () {
+      value() {
         this.instance.setValue(this.value)
-      }
+      },
+      options: {
+        handler(val, old) {
+          if (this.instance) {
+            this.data = objectClone(val)
+            this.instance.setOptions(this.data)
+          }
+        },
+        deep: true
+      },
     }
   }
 </script>

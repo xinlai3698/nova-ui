@@ -81,7 +81,7 @@
 .nv-switch {
   display: inline-block;
   font-size: 0;
-  line-height: 1;
+  line-height: 16px;
   margin: 0;
   padding: 0;
   position: relative;
@@ -107,12 +107,14 @@
 .nv-check-group {
   font-size: 0;
   user-select: none;
+  padding-left: 1px;
 
   .nv-check-item {
     margin: 0;
     display: inline-block;
     outline: 0;
     font-size: $font-size-base;
+    margin-left: -1px;
 
     .nv-check__btn {
       position: relative;
@@ -133,9 +135,9 @@
       border-bottom-left-radius: 0;
     }
 
-    &:not(:first-child) {
-      margin-left: -1px;
-    }
+    // &:not(:first-child) {
+    //   margin-left: -1px;
+    // }
 
     input[type="checkbox"],
     input[type="radio"] {
@@ -143,7 +145,7 @@
 
       &:checked ~ .nv-check__btn {
         z-index: 2;
-        @include ButtonSpreadStyle($btn-group-actived);
+        @include ButtonSpreadStyle($btn-group--actived);
       }
 
       &:disabled ~ .nv-check__btn {
@@ -153,7 +155,7 @@
 
       &:not([disabled]):not(:checked) ~ .nv-check__btn:hover {
         z-index: 1;
-        @include ButtonSpreadStyle($btn-group-hover);
+        @include ButtonSpreadStyle($btn-group--hover);
       }
     }
   }
@@ -168,7 +170,7 @@
     input[type="radio"] {
       &:checked ~ .nv-check__btn {
         z-index: 0;
-        box-shadow: -1px 0 0 0 $color-btn-hover-bg;
+        box-shadow: -1px 0 0 0 $color-info--lighten;
         @include ButtonSpreadStyle($btn-primary);
       }
     }

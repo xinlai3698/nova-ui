@@ -40,11 +40,12 @@
     data() {
       return {
         instance: null,
+        visible: this.value
       }
     },
     mounted() {
       const props = this.$props
-      props.visible = !!props.value
+      props.visible = this.visible
       props.content = this.$refs['content'] || ''
       props.footSlot = this.$refs['foot'] || null
       props.btns = this.$refs['btns'] || null
@@ -52,22 +53,41 @@
       this.instance = new Modal(props)
       this.instance
       .on('open', $el => {
+        this.visible = true
         this.$emit('open', $el)
         this.$emit('input', true)
       })
       .on('close', (type, $el) => {
+        this.visible = false
         this.$emit('close', type, $el)
         this.$emit('input', false)
       })
+
+      // this.baywatch(['title', 'closeBtn', 'backdrop', 'backdropBackground', 'backdropClose', 'escClose', 'width', 'top', 'scrollLock'], this.updateOptions.bind(this))
     },
     watch: {
-      value(val) {
-        if (val && this.instance) {
-          this.instance.open()
-        } else {
-          this.instance.close()
+      value(val, oldVal) {
+        if (val !== oldVal) {
+          this.visible = val
+          if (val && this.instance) {
+            this.instance.open()
+          } else {
+            this.instance.close()
+          }
         }
-      }
+      },
+
+      title (val) {
+        this.updateOptions({title: val})
+      },
+
+      width (val) {
+        this.updateOptions({width: val})
+      },
+
+      top (val) {
+        this.updateOptions({top: val})
+      },
     },
     methods: {
       open() {
@@ -75,11 +95,25 @@
       },
       close(type) {
         this.instance && this.instance.close(type)
-      }
+      },
+      updateOptions (options) {
+        this.instance && this.instance.updateOptions(options)
+      },
+      
+      // baywatch (props, watcher) {
+      //   const iterator = function(prop) {
+      //     this.$watch(prop, watcher)
+      //   }
+      //   props.forEach(iterator, this)
+      // },
     },
     beforeDestroy() {
-      this.instance && this.instance.destroy()
-      this.$nextTick(() => this.instance = null)
+      try {
+        this.instance && this.instance.destroy()
+        this.$nextTick(() => this.instance = null)
+      } catch (error) {
+        
+      }
     }
   }
 </script>

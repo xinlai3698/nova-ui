@@ -37,6 +37,7 @@
       justify-content: center;
       overflow: hidden;
       text-overflow: ellipsis;
+      vertical-align: top;
     }
 
     &[align="left"] .nv-table__cell {
@@ -84,7 +85,7 @@
   &.nv-table--striped {
     thead {
       tr {
-        background-color: $color-table-thead-bg;
+        background-color: $color-table--head;
       }
 
       th {
@@ -104,11 +105,11 @@
 
     tbody {
       tr:nth-of-type(even) {
-        background-color: $color-table-even-bg;
+        background-color: $color-table--head;
 
         &:hover,
         &.nv-selected {
-          background-color: $color-table-hover;
+          background-color: $color-table--hover;
         }
       }
     }
@@ -117,7 +118,7 @@
   tbody {
     tr:hover,
     tr.nv-selected {
-      background-color: $color-table-hover;
+      background-color: $color-table--hover;
     }
   }
 }

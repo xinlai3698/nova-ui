@@ -44,10 +44,10 @@
 
   @include Size($input-font-size, $input-height, $input-padding-x);
   @include Placeholder {
-    color: $color-placeholder;
+    color: $color-text--placeholder;
   }
 
-  &:not([disabled]):not(.nv-disabled):not(.nv-input--danger) {
+  &:not([disabled]):not(.nv-disabled):not(.nv-input--error) {
     transition: border-color .2s $transition-timing-function;
 
     &:hover,
@@ -58,8 +58,12 @@
     }
   }
 
-  &.nv-input--danger {
-    border-color: $color-danger;
+  &.nv-input--error {
+    border-color: $color-error;
+  }
+
+  &.nv-input--success {
+    border-color: $color-success;
   }
 
   // 小尺寸
@@ -74,8 +78,8 @@
 
   &:disabled,
   &.nv-disabled {
-    border-color: $color-line;
-    background-color: $color-bg-disabled;
+    border-color: $color-line--disabled;
+    background-color: $color-bg--disabled;
     color: $input-disabled-color;
     cursor: not-allowed;
     user-select: none;
@@ -171,7 +175,7 @@ textarea.nv-input {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: $color-placeholder;
+    color: $color-text--placeholder;
     padding: 0 6px;
   }
 }

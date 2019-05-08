@@ -1,5 +1,7 @@
 # Tree 树
 
+## 使用和示例
+
 ### 基础用法
 
 :::vue-demo
@@ -81,6 +83,16 @@
         data2: JSON.parse(JSON.stringify(TreeData)),
         data3: JSON.parse(JSON.stringify(TreeData))
       }
+    },
+    mounted () {
+      // setTimeout(() => {
+      //   this.data = [
+      //     {
+      //       id: '610602',
+      //       label: '宝塔区'
+      //     }
+      //   ]
+      // }, 2000)
     }
   }
 </script>  
@@ -250,3 +262,26 @@
 </script>  
 ```
 :::
+
+
+## API
+
+### Attributes
+
+同 `Native`
+
+### Methods
+> Vue组件暂时仅支持如下方法
+
+- `filter`
+- `appendNode`
+- `removeNode`
+- `getCheckedNodes`
+
+### Events
+
+> Vue组件暂时仅支持如下方法
+
+- `click`
+- `expend`
+- `check`
