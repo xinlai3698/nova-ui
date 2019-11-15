@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "rm -rf docs/* && webpack-dev-server --env=development  --mode=development  --config scripts/dev.webpack.js",
+    "dev": "rm -rf docs/* && webpack-dev-server --open chrome --env=development  --mode=development  --config scripts/dev.webpack.js",
     "doc": "rm -rf docs/assets/* && webpack --env=production --mode=production --config scripts/dev.webpack.js",
     "build": "webpack --env=production --mode=production --config scripts/build.webpack.js && webpack --env=production --mode=production --config scripts/vue.webpack.js",
     "stylelint": "stylelint src/**/*.scss examples/**/*.scss",
