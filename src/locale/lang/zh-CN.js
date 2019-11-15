@@ -5,7 +5,9 @@ export default {
     shortMonths: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
     year: '年',
     confirm: '确定',
-    today: '今天'
+    cancel: '取消',
+    today: '今天',
+    now: '此刻',
   },
   pagination: {
     total: '共{total}条记录，第{index}/{pages}页',
@@ -20,8 +22,7 @@ export default {
   },
   colorPicker: {
     confirm: '确定',
-    clear: '清空',
     recently: '最近使用的颜色',
     more: '更多'
-  }
+  },
 }

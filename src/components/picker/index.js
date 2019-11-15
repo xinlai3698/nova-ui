@@ -12,7 +12,7 @@
  */
 
 import { Events } from '../../utils/events'
-import { mixins, isElement, throwError } from '../../utils/utils'
+import { mixins, isElement, throwError, isNumber, isNumberString } from '../../utils/utils'
 import { bind, unbind, qsa, addClass, removeNode, getScrollParent } from '../../utils/dom'
 import { template } from '../../utils/template'
 import { Popup } from '../../utils/popup'
@@ -48,6 +48,8 @@ export const defaults = {
   autoCorrect: true,
   // 关闭时是隐藏还是销毁
   closeType: 'hide', // hide | destroy
+  // 层级, 如果是null，会未设置，将自动填充
+  zIndex: null,
 }
 
 
@@ -58,6 +60,9 @@ export const defaults = {
  */
 const handleToggle = function () {
   const { states } = this
+  if (!states) {
+    return
+  }
   const display = states.$picker && states.$picker.style.display
   if (display === 'none' || !states.visible) {
     this.open()
@@ -224,10 +229,19 @@ const render = function () {
     $body.innerHTML = (props.content || '').toString()
   }
 
+  let zIndex = props.zIndex
+  if (isNumber(zIndex) || isNumberString(zIndex)) {
+    zIndex = +zIndex
+  } else {
+    zIndex = Popup.nextZIndex()
+  }
+
   $picker.style.display = 'none'
+  $picker.style.zIndex = zIndex
   document.body.appendChild($picker)
   states.$picker = $picker
   states.visible = false
+  states.zIndex = zIndex
 
   if (!states.handles.pickerClick) {
     const self = this
@@ -312,12 +326,20 @@ export class Picker extends Events {
       return
     }
 
-    $picker.style.zIndex = Popup.nextZIndex()
+    let zIndex = states.zIndex
+    if (zIndex < Popup.getCurrentZindex()) {
+      zIndex = Popup.nextZIndex()
+      states.zIndex = zIndex
+      $picker.style.zIndex = zIndex
+    }
+
     $picker.style.visibility = 'hidden'
+    $picker.style.position = 'fixed'
     $picker.style.display = 'block'
     states.visible = true
     setPosition.call(this)
     $picker.style.visibility = null
+    $picker.style.position = null
     this.emit('open', $picker)
   }
 

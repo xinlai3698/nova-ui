@@ -1,11 +1,28 @@
 import Loader from '../../components/loader'
 import { isElement } from '../../utils/utils'
 
-function createLoader (el, modifiers, value) {
-  let $container = el 
+/**
+ * Creates an instance of Loader.
+ * @param {*} el 
+ * @param {*} modifiers 
+ * @param {*} value 
+ */
+function createLoader(el, modifiers, value) {
+  let $container = el
   if (modifiers.fullscreen) {
     $container = document.body
   }
+
+  if (el.$nv__loader) {
+    try {
+      el.$nv__loader.close()
+    } catch (error) {
+      // 
+    }
+    el.$nv__loader = null
+    delete el.$nv__loader
+  }
+
   if (value) {
     let options = {}
     if (modifiers.lock) {
@@ -20,11 +37,8 @@ function createLoader (el, modifiers, value) {
     label && (options.label = label)
     css && (options.customClass = css)
     background && (options.background = background)
-    
     el.$nv__loader = new Loader($container, options)
-  } else {
-    el.$nv__loader && el.$nv__loader.close()
-  } 
+  }
 }
 
 
@@ -34,28 +48,34 @@ export const directive = {
     createLoader(el, modifiers, value)
   },
 
-  update (el, binding) {
+  update(el, binding) {
     let { modifiers, value } = binding
     createLoader(el, modifiers, value)
   },
 
   unbind(el) {
     if (el.$nv__loader) {
-      el.$nv__loader.close()
+      try {
+        el.$nv__loader.close()
+      } catch (error) {
+        // 
+      }
+      el.$nv__loader = null
+      delete el.$nv__loader
     }
   }
 }
 
+
 export default {
   directive,
-  Loader (options) {
+  Loader(options) {
     options = options || {}
-    let $container = options.target 
+    let $container = options.target
     if (!$container || !isElement($container)) {
       $container = document.body
     }
-    delete options.target 
-
+    delete options.target
     return new Loader($container, options)
   }
 }

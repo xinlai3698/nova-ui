@@ -1,5 +1,7 @@
 # Tree 树
 
+## 使用和示例
+
 ### 基础用法
 
 :::vue-demo
@@ -10,13 +12,13 @@
     <p class="doc-row__describe">可用于基础树结构展示/复选/单选</p>
     <div class="doc-row__body">
       <div class="doc-cells">
-        <div class="doc-cell" style="width:30%;">
+        <div class="doc-cell" style="width: 30%;">
           <nv-tree :data="data" expand-all></nv-tree>
         </div>
-        <div class="doc-cell" style="width:30%;">
+        <div class="doc-cell" style="width: 30%;">
           <nv-tree :data="data2" checkable expand-all></nv-tree>
         </div>
-        <div class="doc-cell" style="width:30%;">
+        <div class="doc-cell" style="width: 30%;">
           <nv-tree :data="data3" checkable radio expand-all></nv-tree>
         </div>  
       </div>   
@@ -81,6 +83,16 @@
         data2: JSON.parse(JSON.stringify(TreeData)),
         data3: JSON.parse(JSON.stringify(TreeData))
       }
+    },
+    mounted () {
+      // setTimeout(() => {
+      //   this.data = [
+      //     {
+      //       id: '610602',
+      //       label: '宝塔区'
+      //     }
+      //   ]
+      // }, 2000)
     }
   }
 </script>  
@@ -250,3 +262,29 @@
 </script>  
 ```
 :::
+
+
+## API
+
+### Attributes
+
+同 `Native`
+
+### Methods
+> Vue组件暂时仅支持如下方法
+
+- `filter`
+- `appendNode`
+- `insertBeforeNode`
+- `removeNode`
+- `getCheckedNodes`
+- `updateNode`
+- `getNode`
+
+### Events
+
+> Vue组件暂时仅支持如下方法
+
+- `click`
+- `expend`
+- `check`

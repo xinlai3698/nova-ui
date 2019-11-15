@@ -1,5 +1,6 @@
 # Tree 树
 
+## 使用和示例
 
 ### 基础用法
 :::demo
@@ -16,7 +17,7 @@
   <p class="doc-row__describe">在需要选择(单选/复选)数据时使用</p>
   <div class="doc-row__body">
     <div class="doc-cells">
-      <div class="doc-cell" style="width:45%;">
+      <div class="doc-cell" style="width: 45%;">
         <h6>复选</h6>
         <div id="ins2"></div>
       </div>
@@ -47,7 +48,7 @@
         },
         {
           id: '110108',
-          label: '海淀区',
+          label: '<script>alert(1)<\/script>',
         }
       ]
     },
@@ -135,7 +136,7 @@
   </p>
   <div class="doc-row__body">
     <div class="doc-cells">
-      <div class="doc-cell" style="width:45%;">
+      <div class="doc-cell" style="width: 45%;">
         <h6>全部展开</h6>
         <div id="ins4"></div>
       </div>
@@ -229,7 +230,7 @@
   </p>
   <div class="doc-row__body">
     <div class="doc-cells">
-      <div class="doc-cell" style="width:45%;">
+      <div class="doc-cell" style="width: 45%;">
         <h6>组件禁用</h6>
         <div id="ins6"></div>
       </div>
@@ -455,3 +456,68 @@
 </script>  
 ```
 :::
+
+
+## API
+
+### Attributes
+
+| Attribute   | Description | Type |  Default Values |
+|---|---|---|---|
+| `data` | tree数据 | array | `[]` |
+| `disabled` | 禁用tree | boolean | false |
+| `labelRender` | 渲染器,可用来自定义渲染Node节点Html | function | -- |
+| `indent`|  缩进 | number | 16 |
+| `checkable`|  是否可选择，显示复选/单选框 | boolean | false |
+| `radio`|  是否单选, 默认复选 | boolean | false |
+| `checkName`|  选择框的name值，原生属性 | string | -- |
+| `checkStrictly`|  checkable状态下节点选择完全受控（父子节点选中状态不再关联） | boolean | false |
+| `nodeClickCheck`|  是否在点击节点的时候选中节点，默认值为 false，即只有在点击复选框时才会选中/反选中节点。 | boolean | false |
+| `expandAll`|  是否展开所有节点 | boolean | false |
+| `highlight`|  高亮当前节点的label | boolean | false |
+| `nodeFilter`| 用于搜索时过滤node节点，返回true时表示该节点被匹配 | function | false |
+| `defaultCheckedKeys`| 默认选中的节点ids | array | `[]` |
+| `defaultExpandedKeys`| 默认展开的节点ids | array |  `[]` |
+| `noDataText`| 节点为空时显示的文本 | string | -- |
+| `noMatchDataText`| 无匹配节点时显示的文本 | string | -- |
+
+
+
+### Node
+> 每个Tree有一个或多个Node节点构成，每个Node节点具有以下属性
+
+| Attribute   | Description | Type |  Default Values |
+|---|---|---|---|
+| `id` | `required`节点ID | string |  -- |
+| `label` | 节点名称 | string | -- |
+| `checked` | 节点是否选中 | boolean | false |
+| `disabled` | 节点是否禁用 | boolean | false |
+| `expanded` | 节点是否展开 | boolean | false |
+| `children` | 子节点 | array `[]Node` | null |
+
+
+### Methods
+
+| Method  | Description | Parameters |
+|---|---|---|
+| `setNodesTree` | 将节点数组转换为tree | (data:array) |
+| `arrayToNodes` | 将数组转换为节点组 | (data:array) |
+| `objectToTree` | 将对象转换为树结构 | (object) |
+| `filter` | 过滤树结构,并且返回匹配的结果总数 | (keyword):number |
+| `getNode` | 获取Node节点 | (node) |
+| `appendNode` | 向parent的指定位置(index或末尾)中插入子节点 | (parent, node, index:?number) |
+| `insertBeforeNode` | 在目标元素前插入节点 | (newNode, target) |
+| `removeNode` | 移除指定的节点 | (node, deep = true) |
+| `updateNode` | 更新节点的非parent和children属性 | (id, newNode) |
+| `getCheckedNodes` | 获取选中的节点，参数为`true`时会返包含禁用的选中项，否则仅返回可用的选中项 | (useDisabled?:boolean):`[]Node` |
+| `destroy` | 销毁实例 | -- | 
+
+
+### Events
+
+| Event  | Description | Parameters |
+|---|---|---|
+| `check` | 当节点选中或取消选中时触发 | (node:Node, $parent:HTMLElement) |
+| `click` | 当节点被点击时触发 | (node:Node, $parent:HTMLElement) |
+| `expend` | 当节点展开或折叠时触发 | (expanded:boolean, node:Node, $parent:HTMLElement) |
+| `selected` | 当节点被选中或取消选中时触发 | (node:Node, $parent:HTMLElement) |

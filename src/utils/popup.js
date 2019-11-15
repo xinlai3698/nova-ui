@@ -107,6 +107,14 @@ export class Popup {
     return zIndex
   }
 
+
+  /**
+   * 获取当前z-Index
+   */
+  static getCurrentZindex () {
+    return zIndex
+  }
+
   
   /**
    *
@@ -151,8 +159,8 @@ export class Popup {
 
     // 是否锁屏
     if (options.scrollLock && !isScrollLocked) {
-      let _sbWidth = getScrollbarWidth()
-      let $body = document.body
+      const _sbWidth = getScrollbarWidth()
+      const $body = document.body
       $body.classList.add('nv-locked')
       $body.style.marginRight = _sbWidth + 'px'
       isScrollLocked = true

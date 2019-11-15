@@ -9,10 +9,7 @@
     props: {
       lang: String,
       total: Number,
-      limit:  {
-        type: Number,
-        default: 20
-      },
+      limit:  Number,
       index: {
         type: Number,
         default: 1
@@ -41,12 +38,12 @@
       },
       index (val, oldVal) {
         if (val !== oldVal) {
-          this.instance.setIndex(val)
+          this.instance.setIndex(val, false)
         }
       },
       limit (val, oldVal) {
         if (val !== oldVal) {
-          this.instance.setLimit(val)
+          this.instance.setLimit(val, false)
         }
       }
     },

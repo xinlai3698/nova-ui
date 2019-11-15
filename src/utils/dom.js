@@ -58,6 +58,19 @@ export const once = (el, name, handle) => {
 }
 
 
+
+/**
+ * 主动触发某个事件
+ * @param {*} el 
+ * @param {*} eventName 
+ */
+export const dispatchEvent = (el, eventName) => {
+  const evt = document.createEvent('HTMLEvents')
+  evt.initEvent(eventName, false, true)
+  el.dispatchEvent(evt)
+}
+
+
 /**
  * DOM 选择器
  * 统一API，返回一个DOM集合
@@ -88,6 +101,7 @@ export const qsa = (selector, context) => {
   }
   return []
 }
+
 
 
 /**
@@ -186,23 +200,32 @@ export const addClass = (el, className) => {
 
 
 /**
+ * 通过创建元素的方式获取滚动条宽度
+ * @returns {Number}
+ */
+export const getElScrollbarWidth = () => {
+  const scrollDiv = document.createElement('div')
+  scrollDiv.style.cssText += 'width:100px;position:absolute;top:-9999rem;z-index:-1;visibility:hidden;'
+  document.body.appendChild(scrollDiv)
+  scrollDiv.style.overflow = 'scroll'
+  const width = scrollDiv.getBoundingClientRect().width - scrollDiv.clientWidth
+  scrollDiv.parentNode.removeChild(scrollDiv)
+  return width
+}
+
+
+/**
  * 获取滚动条的宽度
  * @returns {Number} 
  */
 export const getScrollbarWidth = () => {
-  let hasScroll = document.body.scrollHeight > window.innerHeight
+  const hasScroll = document.documentElement.scrollHeight > window.innerHeight
   if (getScrollbarWidth.value !== void 0 && getScrollbarWidth.value !== 0) {
     return getScrollbarWidth.value
   }
   // 当页面有滚动条的时候才计算
   if (hasScroll) {
-    const scrollDiv = document.createElement('div')
-    scrollDiv.style.cssText += 'width:100px;position:absolute;top:-9999rem;z-index:-1;visibility:hidden;'
-    document.body.appendChild(scrollDiv)
-    scrollDiv.style.overflow = 'scroll'
-    const width = scrollDiv.getBoundingClientRect().width - scrollDiv.clientWidth
-    scrollDiv.parentNode.removeChild(scrollDiv)
-    getScrollbarWidth.value = width
+    getScrollbarWidth.value = getElScrollbarWidth()
   } else {
     getScrollbarWidth.value = 0
   }
@@ -218,16 +241,21 @@ export const removeNode = el => el && el.parentNode && el.parentNode.removeChild
 
 
 /**
+ * 兼容性的requestAnimationFrame
+ * @returns {Function}
+ */
+export const reqAnimationFrame = window.requestAnimationFrame || function (callback) {
+  return setTimeout(callback, 60)
+}
+
+
+/**
  * 将元素滚动到指定位置
  * @param {*} element 
  * @param {*} to 
  * @param {*} duration 
  */
 export const scrollTo = (element, to, duration) => {
-  const requestAnimationFrame = window.requestAnimationFrame ||
-    function requestAnimationFrameTimeout() {
-      return setTimeout(arguments[0], 10)
-    }
   if (duration <= 0) {
     element.scrollTop = to
     return
@@ -235,7 +263,7 @@ export const scrollTo = (element, to, duration) => {
   const difference = to - element.scrollTop
   const perTick = difference / duration * 10
 
-  requestAnimationFrame(() => {
+  reqAnimationFrame(() => {
     element.scrollTop = element.scrollTop + perTick
     if (element.scrollTop === to) return
     scrollTo(element, to, duration - 10)
@@ -345,10 +373,13 @@ export default {
   proxy,
   addClass,
   getScrollbarWidth,
+  getElScrollbarWidth,
   removeNode,
   scrollTo,
   getOffsetByParent,
   getScrollParent,
   getSize,
-  getIndex
+  getIndex,
+  reqAnimationFrame,
+  dispatchEvent,
 }

@@ -4,7 +4,7 @@
       <span class="nv-tag__label" :title="label">
         <slot>{{label}}</slot>
       </span>
-      <a class="nv-tag__close nv-icon-close" v-if="removeable" @click="remove"></a>
+      <a class="nv-tag__close nv-icon-close" v-if="removeable" @click.stop="remove"></a>
     </span>
   </transition>
 </template>
@@ -15,6 +15,10 @@
     props: {
       removeable: Boolean,
       label: String,
+      // 大圆角， 药片式
+      pill: Boolean,
+      // 可悬浮的
+      hoverable: Boolean,
       size: {
         type: String,
         default: 'default',
@@ -24,9 +28,9 @@
       },
       type: {
         type: String,
-        default: 'default',
+        default: 'info',
         validator(value) {
-          return ['default', 'error'].indexOf(value) > -1
+          return ['default', 'error', 'info', 'warning', 'success'].indexOf(value) > -1
         }
       }
     },
@@ -39,6 +43,12 @@
         if (this.type !== 'default') {
           className.push(`nv-tag--${this.type}`)
         }
+        if (this.pill) {
+          className.push('nv-pill')
+        }
+        if (this.hoverable) {
+          className.push('nv-hover')
+        }
         return className
       }
     },
@@ -50,6 +60,7 @@
     methods: {
       remove() {
         this.visible = false
+        this.$emit('remove', this.label)
       }
     }
   }

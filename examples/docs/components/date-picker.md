@@ -19,6 +19,10 @@
       <div class="doc-cell">
         <h5>以 [月] 为单位</h5>
         <input class="nv-input" id="ins3" value="2018-11">
+      </div>
+      <div class="doc-cell">
+        <h5>日期多选</h5>
+        <input class="nv-input" id="ins33" >
       </div>   
     </div>  
   </div>  
@@ -32,6 +36,11 @@
   var ins3 = new Nova.DatePicker(document.getElementById('ins3'), {
     mode: 'month',
     format: 'YYYY-MM'
+  })
+
+   var ins33 = new Nova.DatePicker(document.getElementById('ins33'), {
+    format: 'YYYY-MM-DD',
+    multiple: true,
   })
 
   // 回收实例
@@ -109,7 +118,6 @@
 :::
 
 
-
 ## API
 
 ### Format
@@ -134,9 +142,9 @@
 ### Options
 | Attribute   | Description | Type |  Default Values |
 | ----------- | ----------- | ----------- | ----------- |
-| lang | 当前语言 | string | `zh-CN`|
+| lang | 当前语言 | string | -- |
 | inline | 非`Picker`，直接插入到指定容器 | boolean  | false |
-| value | 当前绑定值 | string/Date | -- |
+| value | 当前绑定值 | string/Date/Array<Date> | -- |
 | mode | 模式 | string`<date/year/month>`  | `date` |
 | format | 格式化，见`Format` | string | `YYYY-MM-DD` |
 | weekStart | 一周的起始日 | number`<0 - 6>` | 0 |
@@ -148,7 +156,9 @@
 | align | picker相对target的位置 | string`<left,center,right>` | `left` |
 | disabled | 是否禁用组件 | boolean | false |
 | customClass | 自定义样式名称，多样式以逗号`,`分隔 | string | -- |
-
+| multiple | 是否支持多选日期 | boolean | false |
+| maxMultipleCount | 最多可选的日期个数 | number | `Infinity` |
+| multipleSeparator | 多选日期分隔符 | string | `; `|
 
 ### Methods
 | Method  | Description | Parameters |
@@ -167,11 +177,12 @@
 ### Events
 
 > 在非`inline`模式并且没有设置`confirm`按钮时，`change和done`方法返回值一致。
+总结为一句话： **当设置`confirm`按钮时，请使用`done`事件，否则请使用`change`事件**
 
 | Event Name  | Description | Parameters |
 | ----------- | ----------- | ----------- |
 | open | 打开弹框时触发 | (PickerInstance) |
 | close | 关闭弹框时触发 | (PickerInstance) |
-| change | 当面板上的值改变时触发，此时绑定至不会改变。用于在`inline`模式中监听变化 | (formatValue, value) |
+| change | 当面板上的值改变时触发，此时绑定值不会改变。用于在`inline`模式中监听变化 | (formatValue, value) |
 | done | 点击确定按钮时触发，此时绑定值会改变。用于在`picker`模式中改变绑定值，在`inline`模式中不会触发 | (value, oldValue) |
 
