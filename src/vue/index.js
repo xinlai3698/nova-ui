@@ -16,6 +16,10 @@ import Message from './message'
 import MessageBox from './message-box'
 import Popover from './popover'
 import Tag from './tag'
+import ColorPicker from './color-picker'
+import Loader from './loader'
+import DatePicker from './date-picker'
+
 
 const RadioGroup = RadioGroups.NvRadioGroup
 const RadioItem = RadioGroups.NvRadioItem
@@ -39,6 +43,8 @@ const components = [
   Modal,
   Alert,
   Tag,
+  ColorPicker,
+  DatePicker,
 ]
 
 if (typeof window !== 'undefined' && window.Vue) {
@@ -49,9 +55,11 @@ if (typeof window !== 'undefined' && window.Vue) {
   VP.$message = Message
   VP.$alert = MessageBox.alert
   VP.$confirm = MessageBox.confirm
+  VP.$loader = Loader.Loader
 
   // directive
   window.Vue.directive('popover', Popover)
+  window.Vue.directive('loader', Loader.directive)
 }
 
 
@@ -81,5 +89,7 @@ export default {
   Slider,
   Modal,
   Alert,
-  Tag
+  Tag,
+  ColorPicker,
+  DatePicker
 }
